@@ -7,6 +7,8 @@
 
 #include <WiFiUdp.h>
 
+
+
 ///> @see https://github.com/adafruit/Adafruit_LED_Backpack
 #include "Adafruit_LEDBackpack.h"
 
@@ -22,11 +24,22 @@ public:
     url(F("pool.ntp.org")),
     ntpUDP(),
     timeClient(ntpUDP, url.c_str(), utcOffsetInSeconds)
-  {}
+  {
+    WiFi.setAutoReconnect(true);
+
+    uint8_t mac[6];
+    WiFi.macAddress(mac);
+    char host[20];
+    snprintf_P(host, sizeof(host), PSTR("HORLOGE-%02X%02X%02X"), mac[3], mac[4], mac[5]);
+    WiFi.hostname(host);
+  }
 
   inline
   void setup() {
     Serial.begin(BAUDRATE);
+    setupWebWifi();
+
+    
   
     alpha4.begin(I2C_ADDR);
   
@@ -90,17 +103,24 @@ public:
  */
   inline
   void loop() {
-    for (byte i = 0; i < 10; ++i) {
-      timeClient.update();
-      const byte hh = timeClient.getHours();
+    static auto oldSec = 100;
+
+    if (!WiFi.isConnected()) 
+      setupWiFi(WIFI_SSID, WIFI_PASSWORD);
+    
+    timeClient.update();
+    const auto sec = timeClient.getSeconds();
+    if (sec != oldSec) {
+      oldSec = sec;
+      const auto hh = timeClient.getHours();
       alpha4.writeDigitAscii(0, hh < 10 ? ' ' : ('0' + hh / 10));
-      alpha4.writeDigitAscii(1, '0' + hh % 10, !(i/5));
-      const byte mn = timeClient.getMinutes();
+      alpha4.writeDigitAscii(1, '0' + hh % 10, (sec & 1));
+      const auto mn = timeClient.getMinutes();
       alpha4.writeDigitAscii(2, '0' + mn / 10);
       alpha4.writeDigitAscii(3, '0' + mn % 10);
       alpha4.writeDisplay();
-      delay(100);
     }
+    
   }
   
 protected:
@@ -124,9 +144,10 @@ protected:
   }
 
   void setupWiFi(const String& ssid, const String& password) {
+    WiFi.mode(WIFI_STA);
     WiFi.begin(ssid, password);
 //    WiFi.begin();
-    display(String(F("WIFI - SSID ")) + ssid);
+    display(String(F("WIFI SSID ")) + WiFi.SSID());
     auto s = WiFi.status();
     do {
       switch (s) {
@@ -162,11 +183,38 @@ protected:
           Serial.println(s);
           break;
       }
-      delay(100);
+      yield();
       s = WiFi.status();
     } while (s != WL_CONNECTED);
     display(String(F("IP address ")) + WiFi.localIP().toString());
     delay(200);
+  }
+
+  void setupWebWifi() {
+    WiFi.disconnect();
+
+    Serial.println("Start smartconfig...");
+    WiFi.beginSmartConfig();
+
+    do {
+      Serial.print(".");
+      delay(1000);
+      
+    } while(!WiFi.smartConfigDone() || (WiFi.status() == WL_CONNECTED));
+    Serial.println("");
+    Serial.println("Smartconfig done.");
+    
+    
+    /*
+    WiFi.softAP(F("HORLOGE"));
+    const auto apIP = WiFi.softAPIP();
+//    WiFi.softAPConfig(apIP, apIP, IPAddress(255,255,255,0));
+    char dhcp[] = "\x0B""192.168.4.1";
+*/
+    while (true) {
+
+      yield();
+    }
   }
 
 /**
