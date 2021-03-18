@@ -37,10 +37,6 @@ public:
   inline
   void setup() {
     Serial.begin(BAUDRATE);
-    setupWebWifi();
-
-    
-  
     alpha4.begin(I2C_ADDR);
   
     alpha4.clear();
@@ -93,7 +89,7 @@ public:
     delay(1000);
   
   
-    setupWiFi(WIFI_SSID, WIFI_PASSWORD);
+    setupWiFi();
     timeClient.update();
     displayDate(timeClient.getEpochTime() / 86400L);
   }
@@ -105,8 +101,7 @@ public:
   void loop() {
     static auto oldSec = 100;
 
-    if (!WiFi.isConnected()) 
-      setupWiFi(WIFI_SSID, WIFI_PASSWORD);
+    if (!WiFi.isConnected()) setupWiFi();
     
     timeClient.update();
     const auto sec = timeClient.getSeconds();
@@ -143,78 +138,100 @@ protected:
     delay(200);
   }
 
-  void setupWiFi(const String& ssid, const String& password) {
-    WiFi.mode(WIFI_STA);
-    WiFi.begin(ssid, password);
-//    WiFi.begin();
-    display(String(F("WIFI SSID ")) + WiFi.SSID());
-    auto s = WiFi.status();
-    do {
-      switch (s) {
-        case WL_IDLE_STATUS : 
-          display(F("Status change..."));
-          break;
-        case WL_NO_SSID_AVAIL :
-          display(F("SSID not reachable!"));
-          break;
-        case WL_CONNECTED :
-          display(F("Connected."));
-          break;
-        case WL_CONNECT_FAILED :
-          display(F("Connection failed!"));
-          break;
-        case WL_CONNECTION_LOST :
-          display(F("Connection lost..."));
-          break;
-        case WL_DISCONNECTED :
-          display(F("Disconnected..."));
-          break;
-        default :
-          Serial.print("WL_IDLE_STATUS      ="); Serial.println(WL_IDLE_STATUS);
-          Serial.print("WL_NO_SSID_AVAIL    ="); Serial.println(WL_NO_SSID_AVAIL);
-          Serial.print("WL_SCAN_COMPLETED   ="); Serial.println(WL_SCAN_COMPLETED);
-          Serial.print("WL_CONNECTED        ="); Serial.println(WL_CONNECTED);
-          Serial.print("WL_CONNECT_FAILED   ="); Serial.println(WL_CONNECT_FAILED);
-          Serial.print("WL_CONNECTION_LOST  ="); Serial.println(WL_CONNECTION_LOST);
-          Serial.print("WL_DISCONNECTED     ="); Serial.println(WL_DISCONNECTED);
+  String statusMessage(const int status) {
+    switch (status) {
+      case WL_IDLE_STATUS : 
+        return F("Status change...");
+        break;
+      case WL_NO_SSID_AVAIL :
+        return F("SSID not reachable!");
+        break;
+      case WL_CONNECTED :
+        return F("Connected.");
+        break;
+      case WL_CONNECT_FAILED :
+        return F("Connection failed!");
+        break;
+      case WL_CONNECTION_LOST :
+        return F("Connection lost...");
+        break;
+      case WL_DISCONNECTED :
+        return F("Disconnected...");
+        break;
+      default :
+        Serial.print("WL_IDLE_STATUS      ="); Serial.println(WL_IDLE_STATUS);
+        Serial.print("WL_NO_SSID_AVAIL    ="); Serial.println(WL_NO_SSID_AVAIL);
+        Serial.print("WL_SCAN_COMPLETED   ="); Serial.println(WL_SCAN_COMPLETED);
+        Serial.print("WL_CONNECTED        ="); Serial.println(WL_CONNECTED);
+        Serial.print("WL_CONNECT_FAILED   ="); Serial.println(WL_CONNECT_FAILED);
+        Serial.print("WL_CONNECTION_LOST  ="); Serial.println(WL_CONNECTION_LOST);
+        Serial.print("WL_DISCONNECTED     ="); Serial.println(WL_DISCONNECTED);
 
-          display(String(F("Other error #")) + String(s));
-          Serial.print("Erreur wl_status_t : ");
-          Serial.println(s);
-          break;
-      }
-      yield();
-      s = WiFi.status();
-    } while (s != WL_CONNECTED);
-    display(String(F("IP address ")) + WiFi.localIP().toString());
-    delay(200);
+        Serial.print("Erreur wl_status_t : ");
+        Serial.println(status);
+
+        return String(F("Other error #")) + String(status);
+        break;
+    }
   }
 
-  void setupWebWifi() {
-    WiFi.disconnect();
-
-    Serial.println("Start smartconfig...");
-    WiFi.beginSmartConfig();
-
-    do {
-      Serial.print(".");
-      delay(1000);
-      
-    } while(!WiFi.smartConfigDone() || (WiFi.status() == WL_CONNECTED));
-    Serial.println("");
-    Serial.println("Smartconfig done.");
-    
-    
-    /*
-    WiFi.softAP(F("HORLOGE"));
-    const auto apIP = WiFi.softAPIP();
-//    WiFi.softAPConfig(apIP, apIP, IPAddress(255,255,255,0));
-    char dhcp[] = "\x0B""192.168.4.1";
-*/
-    while (true) {
-
+  boolean waitForConnexion(const unsigned timeout = 30) {
+    auto s = WiFi.status();
+    for(const auto t = millis(); millis() < t + (timeout * 1000UL); s = WiFi.status()) {
+      display(statusMessage(s));
       yield();
+      if (s == WL_CONNECTED) return true;
     }
+    return false;
+  }
+
+/**
+ * Setup WiFi connection or 
+ */
+  void setupWiFi() {
+    WiFi.mode(WIFI_STA);
+    WiFi.begin();
+    display(String(F("WIFI SSID ")) + WiFi.SSID());
+    if (waitForConnexion()) {
+      display(String(F("IP address ")) + WiFi.localIP().toString());
+      delay(200);
+      return;
+    }
+    display(F("No WiFi found!"));
+    delay(200);
+    
+    display(F("Start WPS "));
+    delay(200);
+    if (WiFi.beginWPSConfig()) {
+      if (waitForConnexion()) {
+        display(F("WPS succeded - Reboot"));
+        delay(200);
+        ESP.restart();
+      } else {
+        display(F("WPS timed out!"));
+        delay(200);
+      }
+    } else {
+      display(F("WPS failed!"));
+      delay(200);
+    }
+
+    display(F("Start SmartConfig"));
+    delay(200);
+    if (WiFi.beginSmartConfig()) {
+      if (waitForConnexion()) {
+        display(F("SmartConfig succeded - Reboot"));
+        delay(200);
+        ESP.restart();
+      } else {
+        display(F("Connection timed out!"));
+        delay(200);
+      }
+    } else {
+      display(F("SmartConfig failed!"));
+      delay(200);  
+    }
+    
   }
 
 /**
