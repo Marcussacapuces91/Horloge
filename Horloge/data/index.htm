@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/lib/w3.css">
+    <title>Horloge - Setup page</title>
+	<script type="text/javascript">
+	function setInnerHTML(url, id) {
+	  let xhr = new XMLHttpRequest();
+	  xhr.open("GET", url);
+	  xhr.onload = function() {
+	    if (xhr.status == 200) {
+	      document.querySelector(id).innerHTML = JSON.parse(xhr.responseText); 
+	    } else {
+	      console.error("Erreur "+xhr.status+ " sur "+url);
+	    }
+	  };
+	  xhr.send();
+	}
+
+	function setValue(url, id) {
+	  let xhr = new XMLHttpRequest();
+	  xhr.open("GET", url);
+	  xhr.onload = function() {
+	    if (xhr.status == 200) {
+	      document.querySelector(id).value = JSON.parse(xhr.responseText); 
+	    } else {
+	      console.error("Erreur "+xhr.status+ " sur "+url);
+	    }
+	  };
+	  xhr.send();
+	}
+
+	function updateValue(url, id) {
+	  let xhr = new XMLHttpRequest();
+	  xhr.open("POST", url);
+	  xhr.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
+	  xhr.send(JSON.stringify(document.querySelector(id).value));
+	}
+
+	</script>
+  </head>
+  <body>
+  
+    <div class="w3-container w3-green">
+      <h1>Horloge</h1>
+      <p>Setup page</p>
+    </div>
+    
+    <div class="w3-row-padding">
+      <div class="w3-third">
+        <h2>Wi-Fi</h2>
+	<h3>Current connection:</h3>
+        <table class="w3-table-all">
+	<tr><th>SSID:</th><td id="ssid">unknown</td></tr>
+	<tr><th>IP Client:</th><td id="localip"></td></tr>
+	<tr><th>Signal Level:</th><td><span id="level">-</span> dBm</td></tr>
+	</table>
+	<script type="text/javascript">
+	  setInnerHTML("wifi/ssid", "#ssid");
+	  setInnerHTML("wifi/level", "#level");
+	  setInnerHTML("wifi/localip", "#localip");
+	</script>
+      </div>
+    
+      <div class="w3-third">
+        <h2>Location</h2>
+	<form>
+        <table>
+	<tr><th>NTP Host:</th><td><input type="url" id="ntpURL"/></td></tr>
+	<tr>
+	  <th>Offset UTC:</th>
+	  <td><input type="text" pattern="[+-]{0,1}[0-9]{2}:[0-9]{2}" size="6" maxlength="6" id="timeOffset" /></td>
+	</tr>
+	</table>
+	<input type="button" value="Update" id="updateTime" />
+	</form>
+	<script type="text/javascript">
+	  setValue("time/ntp", "#ntpURL");
+	  setValue("time/offset", "#timeOffset");
+	  document.querySelector("#updateTime").addEventListener("click", function(event) {
+	    updateValue("time/ntp", "#ntpURL");
+	    updateValue("time/offset", "#timeOffset");
+	  });
+	</script>
+      </div>
+    
+      <div class="w3-third">
+        <h2>Alarms</h2>
+
+
+      </div>
+    </div>
+    
+  </body>
+</html>
