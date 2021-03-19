@@ -19,6 +19,9 @@
  *  Contact: marc@sibert.fr
  */
 
+///> @see https://arduino-esp8266.readthedocs.io/en/latest/index.html
+#include <ESP8266WiFi.h>
+
 #include <ESP8266WebServer.h>
 #ifdef SECURE
 #include <ESP8266WebServerSecure.h>
@@ -36,13 +39,13 @@ public:
   void setup() {
 #ifdef SECURE
     server80.onNotFound([](){
-      server80.sendHeader("Location", String(F("https://")) + WiFi.localIP().toString());
+      server80.sendHeader(F("Location"), String(F("https://")) + WiFi.localIP().toString());
       server80.send(302);
     });
     server80.begin();
 
     server443.onNotFound([](){
-      server443.send(404, "text/plain", "Page not found!");
+      server443.send(404, F("text/plain"), F("Page not found!"));
     });
     server443.begin();    
 
@@ -53,14 +56,36 @@ public:
       server80.send(404, F("text/plain"), F("Page not found!"));      
     });
 
-    server80.on("/", [](){
+///> index.htm or root
+    server80.on(F("/"), [](){
       auto f = LittleFS.open(F("/index.htm"), "r");
       if (!f) {
         server80.send(500, F("text/plain"), F("Can't find /index.htm file in SPDIF!"));
         return;
       }
-      server80.setContentLength(CONTENT_LENGTH_UNKNOWN);
+      server80.setContentLength(f.size());
+      server80.sendHeader(F("cache-control"), F("max-age=3600"););
       server80.send(200, F("text/html"), "");
+      static const size_t BUFFER_LEN = 1000;
+      char buffer[BUFFER_LEN];
+      while (f.available()) {
+        const auto len = f.readBytes(buffer, BUFFER_LEN);
+        server80.sendContent(buffer, len);
+        yield();
+      }
+      f.close();
+    });
+
+///> w3.css
+    server80.on(F("/w3.css"), [](){
+      auto f = LittleFS.open(F("/w3.css"), "r");
+      if (!f) {
+        server80.send(500, F("text/plain"), F("Can't find /w3.css file in SPDIF!"));
+        return;
+      }
+      server80.setContentLength(f.size());
+      server80.sendHeader(F("cache-control"), F("max-age=3600"););
+      server80.send(200, F("text/css"), "");
       static const size_t BUFFER_LEN = 1000;
       char buffer[BUFFER_LEN]; 
       while (f.available()) {
@@ -69,13 +94,15 @@ public:
         yield();
       }
       f.close();
-      
+    });
+
+    server80.on(F("/wifi/ssid"), [](){
+        const auto s = '"' + String(WiFi.SSID()) + '"';
+        server80.send(200, String(F("application/json; charset=utf-8")), s); 
     });
 
     server80.begin();
-
 #endif
-    
   }
 
 /**
