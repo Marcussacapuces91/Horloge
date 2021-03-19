@@ -1,18 +1,17 @@
 
 ///> @see https://github.com/arduino-libraries/NTPClient
 #include <NTPClient.h>
+#include <WiFiUdp.h>
 
 ///> @see https://arduino-esp8266.readthedocs.io/en/latest/index.html
 #include <ESP8266WiFi.h>
 
-#include <WiFiUdp.h>
-
-
-
 ///> @see https://github.com/adafruit/Adafruit_LED_Backpack
-#include "Adafruit_LEDBackpack.h"
+#include <Adafruit_LEDBackpack.h>
 
-#include "secrets.h"
+#include <LittleFS.h>
+
+#include "web.h"
 
 template<
   const long BAUDRATE = 115200,
@@ -30,14 +29,16 @@ public:
     uint8_t mac[6];
     WiFi.macAddress(mac);
     char host[20];
-    snprintf_P(host, sizeof(host), PSTR("HORLOGE-%02X%02X%02X"), mac[3], mac[4], mac[5]);
-    WiFi.hostname(host);
+    snprintf_P(host, sizeof(host), PSTR("horloge-%02x%02x%02x"), mac[3], mac[4], mac[5]);
+    hostname = host;
   }
 
   inline
   void setup() {
     Serial.begin(BAUDRATE);
     alpha4.begin(I2C_ADDR);
+    Serial.print(F("LittleFS starts: "));
+    Serial.println(LittleFS.begin() ? "OK." : "Failed!");
   
     alpha4.clear();
     alpha4.setBrightness(0);
@@ -83,15 +84,17 @@ public:
     alpha4.writeDisplay();
     delay(1000);
   
-    display(F("HORLOGE 1,0 (c) Marc SIBERT"));
-    delay(1000);
-    display(String(F("COMPILE ")) + __DATE__ + F(" - ") + __TIME__);
-    delay(1000);
+//    display(F("HORLOGE 1,0 (c) Marc SIBERT"));
+    display(F("HORLOGE 1,0"));
+    delay(500);
+//    display(String(F("COMPILE ")) + __DATE__ + F(" - ") + __TIME__);
+//    delay(1000);
   
   
     setupWiFi();
-    timeClient.update();
-    displayDate(timeClient.getEpochTime() / 86400L);
+
+    web.setup();
+
   }
 
 /**  
@@ -115,7 +118,8 @@ public:
       alpha4.writeDigitAscii(3, '0' + mn % 10);
       alpha4.writeDisplay();
     }
-    
+
+    web.handleClient();
   }
   
 protected:
@@ -190,7 +194,10 @@ protected:
  */
   void setupWiFi() {
     WiFi.mode(WIFI_STA);
+
+    WiFi.hostname(hostname);
     WiFi.begin();
+    
     display(String(F("WIFI SSID ")) + WiFi.SSID());
     if (waitForConnexion()) {
       display(String(F("IP address ")) + WiFi.localIP().toString());
@@ -256,6 +263,8 @@ protected:
   }
   
 private:
+  
+
 ///> Accès à l'afficheur.
   Adafruit_AlphaNum4 alpha4;
 
@@ -265,7 +274,11 @@ private:
   WiFiUDP ntpUDP;
   NTPClient timeClient;
 
+  String hostname;
+
+  Web web;
 };
+
 
 // constexpr char url[] = "europe.pool.ntp.org";
 App<> app;
