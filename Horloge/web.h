@@ -64,7 +64,7 @@ public:
         return;
       }
       server80.setContentLength(f.size());
-      server80.sendHeader(F("cache-control"), F("max-age=3600"););
+      server80.sendHeader(F("cache-control"), F("max-age=3600"));
       server80.send(200, F("text/html"), "");
       static const size_t BUFFER_LEN = 1000;
       char buffer[BUFFER_LEN];
@@ -84,7 +84,7 @@ public:
         return;
       }
       server80.setContentLength(f.size());
-      server80.sendHeader(F("cache-control"), F("max-age=3600"););
+      server80.sendHeader(F("cache-control"), F("max-age=3600"));
       server80.send(200, F("text/css"), "");
       static const size_t BUFFER_LEN = 1000;
       char buffer[BUFFER_LEN]; 
