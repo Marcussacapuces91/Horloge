@@ -64,8 +64,8 @@ public:
         return;
       }
       server80.setContentLength(f.size());
-      server80.sendHeader(F("cache-control"), F("max-age=3600"));
-      server80.send(200, F("text/html"), "");
+      server80.sendHeader(F("Cache-Control"), F("immutable"));
+      server80.send(200, F("text/html; charset=utf-8"), "");
       static const size_t BUFFER_LEN = 1000;
       char buffer[BUFFER_LEN];
       while (f.available()) {
@@ -84,8 +84,8 @@ public:
         return;
       }
       server80.setContentLength(f.size());
-      server80.sendHeader(F("cache-control"), F("max-age=3600"));
-      server80.send(200, F("text/css"), "");
+      server80.sendHeader(F("Cache-Control"), F("immutable"));
+      server80.send(200, F("text/css; charset=utf-8"), "");
       static const size_t BUFFER_LEN = 1000;
       char buffer[BUFFER_LEN]; 
       while (f.available()) {
@@ -98,7 +98,34 @@ public:
 
     server80.on(F("/wifi/ssid"), [](){
         const auto s = '"' + String(WiFi.SSID()) + '"';
+        server80.sendHeader(F("Cache-Control"), F("no-cache"));
+        server80.send(200, String(F("application/json; charset=utf-8")), s);
+    });
+
+    server80.on(F("/wifi/level"), [](){
+        const auto s = String(WiFi.RSSI());
+        server80.sendHeader(F("Cache-Control"), F("no-cache"));
         server80.send(200, String(F("application/json; charset=utf-8")), s); 
+    });
+
+    server80.on(F("/wifi/localip"), [](){
+        const auto s = '"' + String(WiFi.localIP().toString() + '"');
+        server80.sendHeader(F("Cache-Control"), F("no-cache"));
+        server80.send(200, String(F("application/json; charset=utf-8")), s); 
+    });
+
+    server80.on(F("/time/ntp"), [](){
+        const auto s = '"' + String(WiFi.localIP().toString() + '"');
+        server80.sendHeader(F("Cache-Control"), F("no-cache"));
+//        server80.send(200, String(F("application/json; charset=utf-8")), s);
+    });
+
+    server80.on(F("/time/offset"), [](){
+        const auto s = '"' + String(WiFi.localIP().toString() + '"');
+        server80.sendHeader(F("Cache-Control"), F("no-cache"));
+
+
+//        server80.send(200, String(F("application/json; charset=utf-8")), s);
     });
 
     server80.begin();
@@ -116,16 +143,35 @@ public:
   }
 
 protected:
-  static ESP8266WebServer server80;
+  void sendFile(const String& path) {
+    auto f = LittleFS.open(path, "r");
+    if (!f) {
+      server80.send(500, F("text/plain"), String(F("Can't find ")) + path + F(" file in SPDIF!"));
+      return;
+    }
+    server80.setContentLength(f.size());
+    server80.sendHeader(F("Cache-Control"), F("immutable"));
+    server80.send(200, F("text/css; charset=utf-8"), "");
+    static const size_t BUFFER_LEN = 1000;
+    char buffer[BUFFER_LEN]; 
+    while (f.available()) {
+      const auto len = f.readBytes(buffer, BUFFER_LEN);
+      server80.sendContent(buffer, len);
+      yield();
+    }
+    f.close();
+  
+  }
 
+
+private:
+  static ESP8266WebServer server80;
 #ifdef SECURE
   static ESP8266WebServerSecure  server443;
 #endif
-  
 };
 
 ESP8266WebServer Web::server80(80);
-
 #ifdef SECURE
 ESP8266WebServerSecure Web::server443(443);
 #endif
