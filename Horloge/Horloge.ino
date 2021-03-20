@@ -125,6 +125,7 @@ public:
     static auto oldSec = 100;
 
     if (!WiFi.isConnected()) setupWiFi();
+    web.handleClient();
     
     timeClient.update();
     const auto sec = timeClient.getSeconds();
@@ -136,10 +137,13 @@ public:
       const auto mn = timeClient.getMinutes();
       alpha4.writeDigitAscii(2, '0' + mn / 10);
       alpha4.writeDigitAscii(3, '0' + mn % 10);
+//      alpha4.setBrightness( hh >= 22 && hh <= 07 ? 1 : 15);
+      const auto sensorValue = analogRead(A0);
+      alpha4.setBrightness( map(_BV((4 * (sensorValue-500)) / 500), 0, 16, 1, 15) );
+
       alpha4.writeDisplay();
     }
 
-    web.handleClient();
   }
   
 protected:
