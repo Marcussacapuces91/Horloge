@@ -137,9 +137,8 @@ public:
       const auto mn = timeClient.getMinutes();
       alpha4.writeDigitAscii(2, '0' + mn / 10);
       alpha4.writeDigitAscii(3, '0' + mn % 10);
-//      alpha4.setBrightness( hh >= 22 && hh <= 07 ? 1 : 15);
       const auto sensorValue = analogRead(A0);
-      alpha4.setBrightness( constrain(_BV((4 * (sensorValue-500)) / 500), 1, 15) );
+      alpha4.setBrightness( constrain(_BV( map(sensorValue, 500, 1023, 0, 3) ), 1, 15) );
 
       alpha4.writeDisplay();
     }
