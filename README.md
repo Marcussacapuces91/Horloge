@@ -65,7 +65,7 @@
     <li>
       <a href="#a-propos">À propos</a>
       <ul>
-        <li><a href="#depenances">Dépendances</a></li>
+        <li><a href="#dependances">Dépendances</a></li>
       </ul>
     </li>
     <li>
