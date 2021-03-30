@@ -22,7 +22,7 @@
 *** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
 *** https://www.markdownguide.org/basic-syntax/#reference-style-links
 -->
-[![Contributeurs][contributors-shield]][contributors-url]
+[![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
@@ -89,8 +89,9 @@
 <!-- ABOUT THE PROJECT -->
 ## À propos
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
 ![](20210330_093010.jpg)
+
+
 
 
 
@@ -172,9 +173,9 @@ Distributed under the MIT License. See `LICENSE` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Your Name - [@twitter_handle](https://twitter.com/twitter_handle) - email
+Marc SIBERT - [@LabAllen91](https://twitter.com/LabAllen91) - contact@lab-allen.fr
 
-Project Link: [https://github.com/Marcussacapuces91/Horloge](https://github.com/Marcussacapuces91/Horloge)
+Lien projet : [https://github.com/Marcussacapuces91/Horloge](https://github.com/Marcussacapuces91/Horloge)
 
 
 
@@ -191,9 +192,9 @@ Project Link: [https://github.com/Marcussacapuces91/Horloge](https://github.com/
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/Marcussacapuces91/Horloge.svg?style=for-the-badge
+[contributors-shield]: https://img.shields.io/github/contributors/Marcussacapuces91/Horloge.svg?style=for-the-badge&label=Contributeurs
 [contributors-url]: https://github.com/Marcussacapuces91/Horloge/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/Marcussacapuces91/Horloge.svg?style=for-the-badge
+[forks-shield]: https://img.shields.io/github/forks/Marcussacapuces91/Horloge.svg?style=for-the-badge&label="
 [forks-url]: https://github.com/Marcussacapuces91/Horloge/network/members
 [stars-shield]: https://img.shields.io/github/stars/Marcussacapuces91/Horloge.svg?style=for-the-badge
 [stars-url]: https://github.com/Marcussacapuces91/Horloge/stargazers
