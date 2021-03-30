@@ -33,3 +33,4 @@ secret*.*
 *.exe
 *.out
 *.app
+*.backup
