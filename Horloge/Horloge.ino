@@ -19,21 +19,12 @@
  *  Contact: marc@sibert.fr
  */
 
-// #define DEBUG 1
-
 #include "horloge.h"
-
-#ifdef DEBUG
-#include <GDBStub.h>
-#endif
 
 Horloge app;
 
 void setup() {
   app.setup();
-#ifdef DEBUG
-  gdbstub_init();
-#endif
 }
 
 void loop() {
