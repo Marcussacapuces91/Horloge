@@ -63,9 +63,9 @@
   <summary><h2 style="display: inline-block">Table de matière</h2></summary>
   <ol>
     <li>
-      <a href="#about-the-project">À propos</a>
+      <a href="#a-propos">À propos</a>
       <ul>
-        <li><a href="#built-with">Built With</a></li>
+        <li><a href="#depenances">Dépendances</a></li>
       </ul>
     </li>
     <li>
@@ -75,12 +75,12 @@
         <li><a href="#installation">Installation</a></li>
       </ul>
     </li>
-    <li><a href="#usage">Usage</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
+    <li><a href="#utilisation">Utilisation</a></li>
+    <li><a href="#feuille-de-route">Feuille de route</a></li>
+    <li><a href="#contribuer">Contribuer</a></li>
+    <li><a href="#licence">Licence</a></li>
     <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgements">Acknowledgements</a></li>
+    <li><a href="#remerciements">Remerciements</a></li>
   </ol>
 </details>
 
@@ -94,18 +94,17 @@
 
 
 
+<!-- Build with -->
+### Dépendances
 
-Here's a blank template to get started:
-**To avoid retyping too much info. Do a search and replace with your text editor for the following:**
-`Marcussacapuces91`, `Horloge`, `twitter_handle`, `email`, `Horloge`, `project_description`
-
-
-### Built With
-
-* []()
-* []()
-* []()
-
+* [Arduino<sup>&copy;</sup> IDE](https://www.arduino.cc/en/software) ;
+* [NTPClient](https://github.com/arduino-libraries/NTPClient) ;
+* [WiFiUdp](https://github.com/esp8266/Arduino/blob/master/libraries/ESP8266WiFi/src/WiFiUdp.h) ;
+* [ESP8266WiFi](https://arduino-esp8266.readthedocs.io/en/latest/index.html) ;
+* [Adafruit LEDBackpack](https://github.com/adafruit/Adafruit_LED_Backpack) ;
+* [LittleFS](https://github.com/littlefs-project/littlefs) ;
+* [ESP8266WebServer](https://github.com/esp8266/Arduino/blob/master/libraries/ESP8266WebServer/src/ESP8266WebServer.h) ;
+* [ArduinoJson](https://arduinojson.org/).
 
 
 <!-- GETTING STARTED -->
@@ -133,54 +132,47 @@ This is an example of how to list things you need to use the software and how to
    ```
 
 
-
 <!-- USAGE EXAMPLES -->
-## Usage
+## Utilisation
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+> Mettre ici des exemples pour montrer comment utiliser ce projet. Des copies d'écran, des exemples de code et des démos dans cet espace. On peut aussi y ajouter des liens vers d'autres ressources.
 
-_For more examples, please refer to the [Documentation](https://example.com)_
-
+<!-- Pour plus d'exemples, voir aussi [Documentation](https://example.com) -->
 
 
 <!-- ROADMAP -->
-## Roadmap
+## Feuille de route
 
-See the [open issues](https://github.com/Marcussacapuces91/Horloge/issues) for a list of proposed features (and known issues).
-
+Voir les [Points ouverts (_issues_)](https://github.com/Marcussacapuces91/Horloge/issues) pour connaître la liste des fonctionnalités à venir ()et des problèmes rencontrés).
 
 
 <!-- CONTRIBUTING -->
-## Contributing
+## Contribuer
 
-Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+Les contributions sont ce qui rend la communauté _Open Source_ un si magnifique lieu de création, d'inspiration et d'apprentissage. Toutes les contributions que vous pouvez faire pour ce projet seront **grandement appréciées**.
 
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
+1. _Forker_ le présent projet ;
+2. Créer votre branche de fonctionnalité (`git checkout -b feature/AmazingFeature`) ;
+3. Commiter vos modifications (`git commit -m 'Ajout d’une AmazingFeature'`) ;
+4. Pousser dans la branche (`git push origin feature/AmazingFeature`) ;
+5. Ouvrir un _Pull Request_.
 
 
 <!-- LICENSE -->
-## License
+## Licence
 
-Distributed under the MIT License. See `LICENSE` for more information.
-
+Tous les fichiers sont distribués sous licence **Apache 2.0** sauf indication contraire dans le document. Voir le fichier [`LICENSE`](https://github.com/Marcussacapuces91/Horloge/blob/main/LICENSE) pour plus d'information.
 
 
 <!-- CONTACT -->
 ## Contact
 
-Marc SIBERT - [@LabAllen91](https://twitter.com/LabAllen91) - contact@lab-allen.fr
-
-Lien projet : [https://github.com/Marcussacapuces91/Horloge](https://github.com/Marcussacapuces91/Horloge)
-
+* Marc SIBERT - [@LabAllen91](https://twitter.com/LabAllen91) - contact@lab-allen.fr
+* Lien projet : [https://github.com/Marcussacapuces91/Horloge](https://github.com/Marcussacapuces91/Horloge)
 
 
 <!-- ACKNOWLEDGEMENTS -->
-## Acknowledgements
+## Remerciements
 
 * []()
 * []()
@@ -194,11 +186,11 @@ Lien projet : [https://github.com/Marcussacapuces91/Horloge](https://github.com/
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 [contributors-shield]: https://img.shields.io/github/contributors/Marcussacapuces91/Horloge.svg?style=for-the-badge&label=Contributeurs
 [contributors-url]: https://github.com/Marcussacapuces91/Horloge/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/Marcussacapuces91/Horloge.svg?style=for-the-badge&label="
+[forks-shield]: https://img.shields.io/github/forks/Marcussacapuces91/Horloge.svg?style=for-the-badge&label=Forks
 [forks-url]: https://github.com/Marcussacapuces91/Horloge/network/members
-[stars-shield]: https://img.shields.io/github/stars/Marcussacapuces91/Horloge.svg?style=for-the-badge
+[stars-shield]: https://img.shields.io/github/stars/Marcussacapuces91/Horloge.svg?style=for-the-badge&logo=GitHub
 [stars-url]: https://github.com/Marcussacapuces91/Horloge/stargazers
-[issues-shield]: https://img.shields.io/github/issues/Marcussacapuces91/Horloge.svg?style=for-the-badge
+[issues-shield]: https://img.shields.io/github/issues/Marcussacapuces91/Horloge.svg?style=for-the-badge&label=Anomalies
 [issues-url]: https://github.com/Marcussacapuces91/Horloge/issues
 [license-shield]: https://img.shields.io/github/license/Marcussacapuces91/Horloge.svg?style=for-the-badge
 [license-url]: https://github.com/Marcussacapuces91/Horloge/blob/master/LICENSE
