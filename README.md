@@ -22,11 +22,12 @@
 *** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
 *** https://www.markdownguide.org/basic-syntax/#reference-style-links
 -->
-[![Contributors][contributors-shield]][contributors-url]
+[![Contributeurs][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
-[![License Apache 2.0][license-shield]][license-url]
+[![License][license-shield]][license-url]
+[![Twitter][twitter-shield]][twitter-url]
 
 <!-- [![LinkedIn][linkedin-shield]][linkedin-url] -->
 
@@ -190,15 +191,18 @@ Project Link: [https://github.com/Marcussacapuces91/Horloge](https://github.com/
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/Marcussacapuces91/repo.svg?style=for-the-badge
-[contributors-url]: https://github.com/Marcussacapuces91/repo/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/Marcussacapuces91/repo.svg?style=for-the-badge
-[forks-url]: https://github.com/Marcussacapuces91/repo/network/members
-[stars-shield]: https://img.shields.io/github/stars/Marcussacapuces91/repo.svg?style=for-the-badge
-[stars-url]: https://github.com/Marcussacapuces91/repo/stargazers
-[issues-shield]: https://img.shields.io/github/issues/Marcussacapuces91/repo.svg?style=for-the-badge
-[issues-url]: https://github.com/Marcussacapuces91/repo/issues
-[license-shield]: https://img.shields.io/github/license/Marcussacapuces91/repo.svg?style=for-the-badge
-[license-url]: https://github.com/Marcussacapuces91/repo/blob/master/LICENSE.txt
+[contributors-shield]: https://img.shields.io/github/contributors/Marcussacapuces91/Horloge.svg?style=for-the-badge
+[contributors-url]: https://github.com/Marcussacapuces91/Horloge/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/Marcussacapuces91/Horloge.svg?style=for-the-badge
+[forks-url]: https://github.com/Marcussacapuces91/Horloge/network/members
+[stars-shield]: https://img.shields.io/github/stars/Marcussacapuces91/Horloge.svg?style=for-the-badge
+[stars-url]: https://github.com/Marcussacapuces91/Horloge/stargazers
+[issues-shield]: https://img.shields.io/github/issues/Marcussacapuces91/Horloge.svg?style=for-the-badge
+[issues-url]: https://github.com/Marcussacapuces91/Horloge/issues
+[license-shield]: https://img.shields.io/github/license/Marcussacapuces91/Horloge.svg?style=for-the-badge
+[license-url]: https://github.com/Marcussacapuces91/Horloge/blob/master/LICENSE
+[twitter-shield]: https://img.shields.io/twitter/follow/LabAllen91?label=Suivre&style=for-the-badge&logo=Twitter
+[twitter-url]: https://twitter.com/LabAllen91
+
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/Marcussacapuces91
