@@ -64,6 +64,7 @@ public:
     Serial.println(LittleFS.begin() ? "OK." : "Failed!");
   
     alpha4.clear();
+/*
     alpha4.setBrightness(0);
     
     alpha4.writeDigitRaw(0, 0x0008);
@@ -106,10 +107,10 @@ public:
     alpha4.writeDigitRaw(3, 0x00E3);
     alpha4.writeDisplay();
     delay(1000);
-  
+*/
+
 //    display(F("HORLOGE 1,0 (c) Marc SIBERT"));
-    display(F("HORLOGE 1,0"));
-    delay(500);
+    display(F("HORLOGE 1.0...  xxxxxx"));
 //    display(String(F("COMPILE ")) + __DATE__ + F(" - ") + __TIME__);
 //    delay(1000);
   
@@ -154,18 +155,33 @@ protected:
  * @param str La chaîne de caractère.
  */
   void display(const String& str) {
-    const byte digits = 4;
-    if (str.length() <= digits) {
-      for (byte i = 0; i < digits; ++i) {
-        alpha4.writeDigitAscii(i, i < str.length() ? str[i] : ' ');
+    byte p = 0;
+    for(size_t i = 0; i < str.length(); ++i) { 
+      const auto c = str[i];
+      if (c == '.') {
+        if (i) {
+          if (str[i-1] == '.') {
+            alpha4.writeDigitAscii(p, ' ', true);
+            ++p;
+          } else {
+            alpha4.writeDigitAscii(p-1, str[i-1], true);        
+          }
+        }
+      } else {
+        alpha4.writeDigitAscii(p, c);
+        ++p;
       }
-    } else {
-      for (unsigned i = 0; i < str.length() - (digits - 1); ++i) {
-        display(str.substring(i, i + digits));
-      }  
+      if (p > 3) {
+        alpha4.writeDisplay();
+        delay(200);
+        display(str.substring(1));
+        return;
+      }
     }
+    delay(300);
+    alpha4.clear();
     alpha4.writeDisplay();
-    delay(200);
+    delay(100);
   }
 
   String statusMessage(const int status) {
