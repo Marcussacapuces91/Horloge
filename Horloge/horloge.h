@@ -110,7 +110,7 @@ public:
 */
 
 //    display(F("HORLOGE 1,0 (c) Marc SIBERT"));
-    display(F("HORLOGE 1.0...  xxxxxx"));
+    display(F("HORLOGE 1.0"));
 //    display(String(F("COMPILE ")) + __DATE__ + F(" - ") + __TIME__);
 //    delay(1000);
   
@@ -205,6 +205,7 @@ protected:
         return F("Disconnected...");
         break;
       default :
+/*      
         Serial.print("WL_IDLE_STATUS      ="); Serial.println(WL_IDLE_STATUS);
         Serial.print("WL_NO_SSID_AVAIL    ="); Serial.println(WL_NO_SSID_AVAIL);
         Serial.print("WL_SCAN_COMPLETED   ="); Serial.println(WL_SCAN_COMPLETED);
@@ -215,7 +216,7 @@ protected:
 
         Serial.print("Erreur wl_status_t : ");
         Serial.println(status);
-
+*/
         return String(F("Other error #")) + String(status);
         break;
     }
