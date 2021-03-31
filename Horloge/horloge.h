@@ -142,8 +142,7 @@ public:
       alpha4.writeDigitAscii(2, '0' + mn / 10);
       alpha4.writeDigitAscii(3, '0' + mn % 10);
       const auto sensorValue = analogRead(A0);
-      alpha4.setBrightness( constrain(_BV( map(sensorValue, 500, 1023, 0, 3) ), 1, 15) );
-
+      alpha4.setBrightness( constrain(_BV(sensorValue / 256) * 3, 2, 30) / 2 );
       alpha4.writeDisplay();
     }
 
